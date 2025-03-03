@@ -1,39 +1,87 @@
 // Clase
 
 class ToDo {
-
+  Texto
+  Prioridade
+  Feito = false
+  constructor(texto, prioridade) {
+    this.Texto = texto
+    this.Prioridade = prioridade
+  }
 }
+
+let arrayTodos = [] 
 
 // Array
 
 
 //funções projeto
 
-function CriarToDo() {
-
+function CriarToDo(texto, prioridade, array) {
+  let objetoTodo = new ToDo(texto, prioridade)
+  if (!array.some(x => x.Texto == texto))
+      array.push(objetoTodo)
+    return objetoTodo
 }
 
-function AtualizarToDo() {
+function AtualizarToDo(textoAntigo, textoNovo, array) {
+  let atualizado = false
+  array.find(todo => {
+    if (todo.Texto == textoAntigo) {
+      todo.Text = textoNovo
+      atualizado = true
+    }
+  })
 
+  return atualizado
 }
 
-function ConcluirToDo() {
-
+function ConcluirToDo(array, texto) {
+  let concluido = false
+  array.find(todo => {
+    if (todo.Texto == texto) {
+      if (todo.Feito)
+        todo.Feito = false
+      else {
+        todo.Feito = true
+      }
+      concluido = true
+    }
+  })
+  return concluido
 }
 
-function ExcluirToDo() {
-
+function ExcluirToDo(array, texto) {
+  let index
+  let removido = false
+  array.find(todo => {
+    if (todo.Texto == texto) {
+      index = array.indexOf(todo)
+      removido = true
+    }
+  })
+  array.splice(index, 1)
+  return removido
 }
 
-function PesquisarToDo() {
- 
+function PesquisarToDo(array, texto) {
+  let pesquisa = false
+  array.find(todo => {
+    if (todo.Texto.includes(texto)) {
+      pesquisa = true
+    }
+  })
+
+  return pesquisa
 }
 
-function OrdenarCrescente() {
-  
+function OrdenarCrescente(array) {
+  array.sort((a, b) => a.Prioridade - b.Prioridade)
+  return array
 }
-function OrdenarDecrescente() {
-  
+function OrdenarDecrescente(array) {
+  array.sort((a, b) => b.Prioridade - a.Prioridade)
+  return array
 }
 
 // Seleção de elementos
@@ -155,7 +203,7 @@ const filterTodos = (filterValue) => {
         removeTodoLocalStorage(todo.querySelector("h3").innerText)
       })
       arrayTodos = OrdenarCrescente(arrayTodos)
-      arrayTodos.forEach((todo) => saveTodo(todo.Texto, todo.Prioridade, done = 0, save = 1))
+      arrayTodos.find((todo) => saveTodo(todo.Texto, todo.Prioridade, done = 0, save = 1))
       break;
 
     case "decresc":
@@ -164,7 +212,7 @@ const filterTodos = (filterValue) => {
         removeTodoLocalStorage(todo.querySelector("h3").innerText)
       })
       arrayTodos = OrdenarDecrescente(arrayTodos)
-      arrayTodos.forEach((todo) => saveTodo(todo.Texto, todo.Prioridade, done = 0, save = 1))
+      arrayTodos.find((todo) => saveTodo(todo.Texto, todo.Prioridade, done = 0, save = 1))
       break;
 
     default:
